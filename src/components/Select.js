@@ -2,9 +2,8 @@ import React from 'react'
 
 export default function Select(props) {
     return (
-        <select >
+        <select data-testid = 'gender'>
             {props.options.map((items, index) => {
-
                 return (
                     <option
                         key={index}
