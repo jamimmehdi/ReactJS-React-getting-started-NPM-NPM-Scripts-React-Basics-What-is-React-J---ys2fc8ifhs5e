@@ -9,6 +9,7 @@ const App = () => {
 	const [error, setError] = useState("");
 	const [username, setUsername] = useState("");
 	const [formEvent, setFormEvent] = useState();
+	const [submit, setSubmit] = useState(false);
 
 	const [values, setValues] = useState({
 		username: "",
@@ -104,46 +105,52 @@ const App = () => {
 		const data = new FormData(e.target);
 		const formData = Object.fromEntries(data.entries());
 		setValues({ ...formData });
-
 		setFormEvent(e);
+		setSubmit(true);
 	}
 
 	const validateForm = () => {
 		if (validation.isFieldEmpty()) {
 			setIsValid(false);
 			setError("All fields are mandatory");
+			setSubmit(!submit);
 			return;
 		}
 		if (!validation.isAlphanumericName()) {
 			setIsValid(false);
 			setError("Name is not alphanumeric");
+			setSubmit(!submit);
 			return;
 		}
 		if (!validation.isValidEmail()) {
 			setIsValid(false);
 			setError("Email must contain @");
+			setSubmit(!submit);
 			return;
 		}
 		if (!validation.isValidPhone()) {
 			setIsValid(false);
 			setError("Phone Number must contain only numbers");
+			setSubmit(!submit);
 			return;
 		}
 		if (!validation.isValidPassword()) {
 			setIsValid(false);
 			setError("Password must contain atleast 6 letters");
+			setSubmit(!submit);
 			return;
 		}
 
 		setIsValid(true);
 		setUsername(getUserName());
+		setSubmit(!submit);
 	}
 
 	useEffect(() => {
-		if (values.username) {
+		if (submit) {
 			validateForm();
 		}
-	}, [values])
+	}, [submit])
 
 	useEffect(() => {
 		if(isValid) {
